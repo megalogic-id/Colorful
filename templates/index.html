@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100 py-8">
+
+    <div class="container mx-auto">
+        <form method="post" class="mb-8">
+            <label for="color" class="block text-lg font-bold mb-2">Enter a Hex color code:</label>
+            <input type="text" id="color" name="color" value="{{ selected_color }}" placeholder="#RRGGBB or #RGB"
+                class="border rounded-md p-2 w-40">
+            <button type="submit"
+                class="ml-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Generate</button>
+        </form>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6" role="alert">
+            <span class="block sm:inline">{{ messages[0] }}</span>
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        {% for palette_name, colors in all_palettes.items() %}
+        <div>
+            <p class="text-lg font-bold mb-2">{{ palette_name }}:</p>
+            <div class="grid grid-cols-2 gap-4">
+                {% for color in colors %}
+                <div class="flex items-center space-x-4">
+                    <div class="w-16 h-16" style="background-color: {{ color }}"></div>
+                    <span class="copy-color-code cursor-pointer" data-color="{{ color }}">{{ color }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <hr class="my-8">
+        {% endfor %}
+
+    </div>
+
+</body>
+<script>
+    const colorCodeElements = document.querySelectorAll(".copy-color-code");
+
+    colorCodeElements.forEach((element) => {
+        element.addEventListener("click", () => {
+            const colorCode = element.getAttribute("data-color");
+            copyToClipboard(colorCode);
+            alert(`Copied: ${colorCode}`);
+        });
+    });
+
+    // Function to copy text to clipboard
+    function copyToClipboard(text) {
+        const textarea = document.createElement("textarea");
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+    }
+</script>
+
+</html>
