@@ -4,102 +4,117 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Colorful🌈</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Colorful 🌈</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css" rel="stylesheet">
     <link rel="icon" href="{{ url_for('static', filename='icon.png') }}">
 </head>
 
-<body class="bg-gray-100 py-8">
-    <div class="container mx-auto">
+<body class="bg-gray-50 py-8 md:py-16">
+    <div class="container mx-auto max-w-4xl p-4 md:p-0">
+        <h1 class="flex justify-center text-3xl font-semibold mb-4">
+            Colorful 🌈
+        </h1>
         <form method="post" class="mb-8">
-            <label for="color" class="block text-lg font-bold mb-2">Enter a Hex color code:</label>
-            <input type="text" id="hex-color" name="hex-color" placeholder="#RRGGBB" maxlength="7"
-                pattern="#[0-9A-Fa-f]{6}" title="Enter a valid hex color code (e.g., #RRGGBB)" required
-                class="border rounded-md p-2 w-40" value="{{ selected_color }}" />
-            <input type="color" id="color-picker" value="{{ selected_color }}" />
-            <button type="submit"
-                class="ml-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Generate</button>
+            <div class="flex flex-col items-center justify-center space-y-4 md:space-y-6">
+                <div class="flex flex-col items-center justify-center space-y-2 md:flex-row md:space-y-0 md:space-x-2">
+                    <input type="text" id="hex-color" name="hex-color" placeholder="#RRGGBB" maxlength="7"
+                        pattern="#[0-9A-Fa-f]{6}" title="Enter a valid hex color code (e.g., #RRGGBB)" required
+                        class="border rounded-md p-2 w-32 focus:border-blue-400 focus:outline-none"
+                        value="{{ selected_color }}" />
+                    <input type="color" id="color-picker" value="{{ selected_color }}" class="border rounded-md p-1" />
+                </div>
+                <div class="flex justify-center mt-4">
+                    <div id="color-preview" class="w-24 h-24 rounded shadow-lg"
+                        style="background-color: {{ selected_color }};">
+                    </div>
+                </div>
+                <button type="submit"
+                    class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded shadow">Generate</button>
+            </div>
         </form>
 
-        <div id="color-preview" class="mt-4"
-            style="width: 100px; height: 100px; background-color: {{ selected_color }};"></div>
+
+
+
 
         {% with messages = get_flashed_messages() %} {% if messages %}
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6" role="alert">
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-6" role="alert">
             <span class="block sm:inline">{{ messages[0] }}</span>
         </div>
         {% endif %} {% endwith %} {% for palette_name, colors in all_palettes.items() %}
-        <div class="mt-4">
-            <p class="text-lg font-bold mb-2">{{ palette_name }}:</p>
-            <div class="grid grid-cols-2 gap-4">
+        <div class="mt-8">
+            <p class="text-xl font-bold mb-4">{{ palette_name }}:</p>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {% for color in colors %}
-                <div class="flex items-center space-x-4">
-                    <div class="w-16 h-16" style="background-color: {{ color }}"></div>
-                    <span class="copy-color-code cursor-pointer" data-color="{{ color }}">{{ color }}</span>
+                <div class="flex flex-col items-center space-y-2">
+                    <div class="w-16 h-16 rounded-full shadow-lg" style="background-color: {{ color }}"></div>
+                    <span class="copy-color-code cursor-pointer text-sm" data-color="{{ color }}">{{ color }}</span>
                 </div>
                 {% endfor %}
             </div>
         </div>
-        <hr class="my-8" />
+        {% if not loop.last %}
+        <hr class="my-8 border-t-2 border-gray-200" />
+        {% endif %}
         {% endfor %}
     </div>
-</body>
-<script>
-    const hexColorInput = document.getElementById('hex-color');
-    const colorPicker = document.getElementById('color-picker');
-    const colorPreview = document.getElementById('color-preview');
 
-    // Function to update the color picker and preview based on hex input
-    function updateFromHexInput() {
-        const hexColor = hexColorInput.value;
+    <script>
+        const hexColorInput = document.getElementById('hex-color');
+        const colorPicker = document.getElementById('color-picker');
+        const colorPreview = document.getElementById('color-preview');
 
-        // Update the color picker value
-        colorPicker.value = hexColor;
+        // Function to update the color picker and preview based on hex input
+        function updateFromHexInput() {
+            const hexColor = hexColorInput.value;
 
-        // Update the background color of the preview box
-        colorPreview.style.backgroundColor = hexColor;
-    }
+            // Update the color picker value
+            colorPicker.value = hexColor;
 
-    // Function to update the color preview box and input text value
-    function updateColorPreview() {
-        const hexColor = colorPicker.value;
+            // Update the background color of the preview box
+            colorPreview.style.backgroundColor = hexColor;
+        }
 
-        // Update the background color of the preview box
-        colorPreview.style.backgroundColor = hexColor;
+        // Function to update the color preview box and input text value
+        function updateColorPreview() {
+            const hexColor = colorPicker.value;
 
-        // Update the input text value
-        hexColorInput.value = hexColor;
-    }
+            // Update the background color of the preview box
+            colorPreview.style.backgroundColor = hexColor;
 
-    // Add an event listener to the color picker input
-    colorPicker.addEventListener('input', updateColorPreview);
+            // Update the input text value
+            hexColorInput.value = hexColor;
+        }
 
-    // Add an event listener to the hex color input
-    hexColorInput.addEventListener('input', updateFromHexInput);
+        // Add an event listener to the color picker input
+        colorPicker.addEventListener('input', updateColorPreview);
 
-    // Trigger the initial update
-    updateColorPreview();
+        // Add an event listener to the hex color input
+        hexColorInput.addEventListener('input', updateFromHexInput);
 
-    const colorCodeElements = document.querySelectorAll(".copy-color-code");
+        // Trigger the initial update
+        updateColorPreview();
 
-    colorCodeElements.forEach((element) => {
-        element.addEventListener("click", () => {
-            const colorCode = element.getAttribute("data-color");
-            copyToClipboard(colorCode);
-            alert(`Copied: ${colorCode}`);
+        const colorCodeElements = document.querySelectorAll(".copy-color-code");
+
+        colorCodeElements.forEach((element) => {
+            element.addEventListener("click", () => {
+                const colorCode = element.getAttribute("data-color");
+                copyToClipboard(colorCode);
+                alert(`Copied: ${colorCode}`);
+            });
         });
-    });
 
-    // Function to copy text to clipboard
-    function copyToClipboard(text) {
-        const textarea = document.createElement("textarea");
-        textarea.value = text;
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand("copy");
-        document.body.removeChild(textarea);
-    }
-</script>
-
+        // Function to copy text to clipboard
+        function copyToClipboard(text) {
+            const textarea = document.createElement("textarea");
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand("copy");
+            document.body.removeChild(textarea);
+        }
+    </script>
+</body>
 
 </html>
