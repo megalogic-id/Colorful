@@ -47,7 +47,8 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {% for color in colors %}
                 <div class="flex flex-col items-center space-y-2">
-                    <div class="w-16 h-16 rounded-full shadow-lg" style="background-color: {{ color }}"></div>
+                    <div class="w-16 h-16 copy-color-code cursor-pointer rounded-full shadow-lg"
+                        data-color="{{ color }}" style="background-color: {{ color }}"></div>
                     <span class="copy-color-code cursor-pointer text-sm" data-color="{{ color }}">{{ color }}</span>
                 </div>
                 {% endfor %}
