@@ -18,10 +18,11 @@ def index():
     selected_color = "#88E399"
     all_palettes = {}
     if request.method == 'POST':
-        selected_color = request.form.get('color').strip()
+        selected_color = request.form.get('hex-color').strip()
         if not validate_hex_color(selected_color):
             flash("Invalid Hex color. Please use the format #RRGGBB or #RGB.")
         else:
+            selected_color = selected_color
             all_palettes = {
                 "Matching Gradient": matching_gradient(selected_color),
                 "Spot Palette": spot_palette(selected_color),

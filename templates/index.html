@@ -2,33 +2,34 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Color Generator</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Colorful🌈</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="{{ url_for('static', filename='icon.png') }}">
 </head>
 
 <body class="bg-gray-100 py-8">
-
     <div class="container mx-auto">
         <form method="post" class="mb-8">
             <label for="color" class="block text-lg font-bold mb-2">Enter a Hex color code:</label>
-            <input type="text" id="color" name="color" value="{{ selected_color }}" placeholder="#RRGGBB or #RGB"
-                class="border rounded-md p-2 w-40">
+            <input type="text" id="hex-color" name="hex-color" placeholder="#RRGGBB" maxlength="7"
+                pattern="#[0-9A-Fa-f]{6}" title="Enter a valid hex color code (e.g., #RRGGBB)" required
+                class="border rounded-md p-2 w-40" value="{{ selected_color }}" />
+            <input type="color" id="color-picker" value="{{ selected_color }}" />
             <button type="submit"
                 class="ml-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Generate</button>
         </form>
 
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
+        <div id="color-preview" class="mt-4"
+            style="width: 100px; height: 100px; background-color: {{ selected_color }};"></div>
+
+        {% with messages = get_flashed_messages() %} {% if messages %}
         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6" role="alert">
             <span class="block sm:inline">{{ messages[0] }}</span>
         </div>
-        {% endif %}
-        {% endwith %}
-
-        {% for palette_name, colors in all_palettes.items() %}
-        <div>
+        {% endif %} {% endwith %} {% for palette_name, colors in all_palettes.items() %}
+        <div class="mt-4">
             <p class="text-lg font-bold mb-2">{{ palette_name }}:</p>
             <div class="grid grid-cols-2 gap-4">
                 {% for color in colors %}
@@ -39,13 +40,46 @@
                 {% endfor %}
             </div>
         </div>
-        <hr class="my-8">
+        <hr class="my-8" />
         {% endfor %}
-
     </div>
-
 </body>
 <script>
+    const hexColorInput = document.getElementById('hex-color');
+    const colorPicker = document.getElementById('color-picker');
+    const colorPreview = document.getElementById('color-preview');
+
+    // Function to update the color picker and preview based on hex input
+    function updateFromHexInput() {
+        const hexColor = hexColorInput.value;
+
+        // Update the color picker value
+        colorPicker.value = hexColor;
+
+        // Update the background color of the preview box
+        colorPreview.style.backgroundColor = hexColor;
+    }
+
+    // Function to update the color preview box and input text value
+    function updateColorPreview() {
+        const hexColor = colorPicker.value;
+
+        // Update the background color of the preview box
+        colorPreview.style.backgroundColor = hexColor;
+
+        // Update the input text value
+        hexColorInput.value = hexColor;
+    }
+
+    // Add an event listener to the color picker input
+    colorPicker.addEventListener('input', updateColorPreview);
+
+    // Add an event listener to the hex color input
+    hexColorInput.addEventListener('input', updateFromHexInput);
+
+    // Trigger the initial update
+    updateColorPreview();
+
     const colorCodeElements = document.querySelectorAll(".copy-color-code");
 
     colorCodeElements.forEach((element) => {
@@ -66,5 +100,6 @@
         document.body.removeChild(textarea);
     }
 </script>
+
 
 </html>
