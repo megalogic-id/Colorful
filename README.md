@@ -1,2 +1,4 @@
 # Colorful
-Color palette generators
+Color palette generators 
+
+[![justforfunnoreally.dev badge](https://img.shields.io/badge/justforfunnoreally-dev-9ff)](https://justforfunnoreally.dev)
