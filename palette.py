@@ -1,15 +1,25 @@
 import colorsys
 
 
+def is_dark(hex_color):
+    # Calculate luminance based on RGB values
+    rgb = hex_to_rgb(hex_color)
+    luminance = (0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2]) / 255
+    return luminance < 0.5
+
+
 def adjust_brightness(hex_color, factor):
     rgb = hex_to_rgb(hex_color)
     h, l, s = colorsys.rgb_to_hls(*[x/255.0 for x in rgb])
 
-    # Determine whether to lighten or darken based on the initial lightness
-    if l < 0.5:
-        l = max(min(l + factor, 1), 0)
+    # Determine whether the color is dark
+    is_dark_color = l < 0.5
+
+    # Adjust brightness more aggressively when escaping from darker colors
+    if is_dark_color:
+        l = max(min(l + 2 * abs(factor), 1), 0)
     else:
-        l = max(min(l + factor, l + (1 - l) * factor), 0)
+        l = max(min(l + abs(factor), 1), 0)
 
     rgb_adjusted = [int(x*255) for x in colorsys.hls_to_rgb(h, l, s)]
     return rgb_to_hex(rgb_adjusted)
