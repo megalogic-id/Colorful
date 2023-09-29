@@ -35,12 +35,12 @@ def adjust_hue(hex_color, factor):
 
 def matching_gradient(hex_color):
     # Create a gradient by manipulating hue slightly
-    return [adjust_hue(hex_color, i*0.05) for i in range(32, 256, 32)]
+    return [adjust_hue(hex_color, i*0.05) for i in range(0, 10, 2)]
 
 
 def spot_palette(hex_color):
     # Random spots across the spectrum
-    return [adjust_hue(hex_color, i*0.1) for i in range(32, 256, 32)]
+    return [adjust_hue(hex_color, i*0.8) for i in range(0, 10, 2)]
 
 
 def twisted_spot_palette(hex_color):
