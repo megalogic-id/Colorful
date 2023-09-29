@@ -43,13 +43,16 @@
         </div>
         {% endif %} {% endwith %} {% for palette_name, colors in all_palettes.items() %}
         <div class="mt-8">
-            <p class="text-xl font-bold mb-4">{{ palette_name }}:</p>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <p class="text-xl font-bold mb-4 text-center">{{ palette_name }}</p>
+            <div class="flex flex-wrap justify-center -mx-2">
                 {% for color in colors %}
-                <div class="flex flex-col items-center space-y-2">
-                    <div class="w-16 h-16 copy-color-code cursor-pointer rounded-full shadow-lg"
-                        data-color="{{ color }}" style="background-color: {{ color }}"></div>
-                    <span class="copy-color-code cursor-pointer text-sm" data-color="{{ color }}">{{ color }}</span>
+                <div class="w-1/2 md:w-1/4 px-2 py-4">
+                    <div class="flex flex-col items-center space-y-2">
+                        <div class="w-16 h-16 copy-color-code cursor-pointer rounded-full shadow-lg flex justify-center items-center"
+                            data-color="{{ color }}" style="background-color: {{ color }}"></div>
+                        <span class="copy-color-code cursor-pointer text-sm text-center" data-color="{{ color }}">{{
+                            color }}</span>
+                    </div>
                 </div>
                 {% endfor %}
             </div>
