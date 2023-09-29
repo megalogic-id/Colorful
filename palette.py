@@ -4,7 +4,13 @@ import colorsys
 def adjust_brightness(hex_color, factor):
     rgb = hex_to_rgb(hex_color)
     h, l, s = colorsys.rgb_to_hls(*[x/255.0 for x in rgb])
-    l = max(min(l + factor, 1), 0)
+
+    # Determine whether to lighten or darken based on the initial lightness
+    if l < 0.5:
+        l = max(min(l + factor, 1), 0)
+    else:
+        l = max(min(l + factor, l + (1 - l) * factor), 0)
+
     rgb_adjusted = [int(x*255) for x in colorsys.hls_to_rgb(h, l, s)]
     return rgb_to_hex(rgb_adjusted)
 
@@ -19,12 +25,12 @@ def adjust_hue(hex_color, factor):
 
 def matching_gradient(hex_color):
     # Create a gradient by manipulating hue slightly
-    return [adjust_hue(hex_color, i*0.05) for i in range(0, 10, 2)]
+    return [adjust_hue(hex_color, i*0.05) for i in range(32, 256, 32)]
 
 
 def spot_palette(hex_color):
     # Random spots across the spectrum
-    return [adjust_hue(hex_color, i*0.1) for i in range(0, 10, 2)]
+    return [adjust_hue(hex_color, i*0.1) for i in range(32, 256, 32)]
 
 
 def twisted_spot_palette(hex_color):
