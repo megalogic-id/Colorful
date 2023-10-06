@@ -1,14 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Colorful 🌈</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="icon" href="{{ url_for('static', filename='icon.png') }}">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</head>
+{% include "includes/head.html" %}
 
 <body class="bg-gray-50 py-8 md:py-16">
     <div class="container mx-auto max-w-4xl p-4 md:p-0">
@@ -60,66 +53,7 @@
         {% endfor %}
     </div>
 
-    <script>
-        const hexColorInput = document.getElementById('hex-color');
-        const colorPicker = document.getElementById('color-picker');
-        const colorPreview = document.getElementById('color-preview');
-
-        // Function to update the color picker and preview based on hex input
-        function updateFromHexInput() {
-            const hexColor = hexColorInput.value;
-
-            // Update the color picker value
-            colorPicker.value = hexColor;
-
-            // Update the background color of the preview box
-            colorPreview.style.backgroundColor = hexColor;
-        }
-
-        // Function to update the color preview box and input text value
-        function updateColorPreview() {
-            const hexColor = colorPicker.value;
-
-            // Update the background color of the preview box
-            colorPreview.style.backgroundColor = hexColor;
-
-            // Update the input text value
-            hexColorInput.value = hexColor;
-        }
-
-        // Add an event listener to the color picker input
-        colorPicker.addEventListener('input', updateColorPreview);
-
-        // Add an event listener to the hex color input
-        hexColorInput.addEventListener('input', updateFromHexInput);
-
-        // Trigger the initial update
-        updateColorPreview();
-
-        const colorCodeElements = document.querySelectorAll(".copy-color-code");
-
-        colorCodeElements.forEach((element) => {
-            element.addEventListener("click", () => {
-                const colorCode = element.getAttribute("data-color");
-                copyToClipboard(colorCode);
-                Swal.fire(
-                    'Good job!',
-                    `You copied: ${colorCode}`,
-                    'success'
-                )
-            });
-        });
-
-        // Function to copy text to clipboard
-        function copyToClipboard(text) {
-            const textarea = document.createElement("textarea");
-            textarea.value = text;
-            document.body.appendChild(textarea);
-            textarea.select();
-            document.execCommand("copy");
-            document.body.removeChild(textarea);
-        }
-    </script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 
 </html>

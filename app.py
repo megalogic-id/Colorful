@@ -33,7 +33,9 @@ def index():
                 "Triadic Colors": triadic_colors(selected_color),
                 "Analogous Colors": analogous_colors(selected_color),
             }
-    return render_template('index.html', all_palettes=all_palettes, selected_color=selected_color)
+    return render_template('pages/index.html',
+                           all_palettes=all_palettes,
+                           selected_color=selected_color)
 
 
 if __name__ == "__main__":
