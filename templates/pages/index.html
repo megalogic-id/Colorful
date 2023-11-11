@@ -3,8 +3,9 @@
 
 {% include "includes/head.html" %}
 
-<body class="bg-gray-50 py-8 md:py-16">
-    <div class="container mx-auto max-w-4xl p-4 md:p-0">
+<body>
+    {% include "components/navbar.html" %}
+    <div class="container mx-auto p-8">
         <h1 class="flex justify-center text-3xl font-semibold mb-4">
             Colorful 🌈
         </h1>
@@ -27,11 +28,14 @@
             </div>
         </form>
 
-        {% with messages = get_flashed_messages() %} {% if messages %}
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-6" role="alert">
             <span class="block sm:inline">{{ messages[0] }}</span>
         </div>
-        {% endif %} {% endwith %} {% for palette_name, colors in all_palettes.items() %}
+        {% endif %}
+        {% endwith %}
+        {% for palette_name, colors in all_palettes.items() %}
         <div class="mt-8">
             <p class="text-xl font-bold mb-4 text-center">{{ palette_name }}</p>
             <div class="flex flex-wrap justify-center -mx-2">
@@ -52,6 +56,8 @@
         {% endif %}
         {% endfor %}
     </div>
+
+    {% include "components/footer.html" %}
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
